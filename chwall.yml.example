@@ -8,6 +8,9 @@ bing:
   - de-DE
   - ja-JP
 general:
+  # Desktop environment: gnome, xfce, mate, sway, feh, plasma
+  # For KDE Plasma, use: desktop: plasma
+  # desktop: plasma
   shared:
     path: /var/cache/last-wall
   sources:

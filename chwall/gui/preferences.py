@@ -568,6 +568,7 @@ class PrefDialog(Gtk.Dialog):
         environments = [("gnome", "Gnome, Pantheon, Budgie, …"),
                         ("mate", "Mate"),
                         ("xfce", "XFCE"),
+                        ("plasma", "KDE Plasma"),
                         ("sway", "Sway"),
                         ("feh", _("Use Feh application"))]
         prefbox = self.make_select_pref(

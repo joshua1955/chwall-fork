@@ -224,6 +224,15 @@ def set_gnome_screensaver(path):
     set_gnome_wallpaper(path, "screensaver")
 
 
+def set_plasma_wallpaper(path):
+    if path is None:
+        raise ChwallWallpaperSetError(_("No wallpaper path given"))
+    err = subprocess.run(["plasma-apply-wallpaperimage", path]).returncode
+    if err != 0:
+        raise ChwallWallpaperSetError(
+            _("Error while calling plasma-apply-wallpaperimage"))
+
+
 def blur_picture(path, ld_path, radius):
     try:
         with Image.open(path) as im:
