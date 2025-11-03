@@ -593,6 +593,12 @@ class PrefDialog(Gtk.Dialog):
         )
         genbox.pack_start(prefbox, False, False, 0)
 
+        prefbox = self.make_toggle_pref(
+            "general", "lock_screen_sync",
+            _("Sync lock screen wallpaper with desktop wallpaper (KDE Plasma)"),
+            default=False)
+        genbox.pack_start(prefbox, False, False, 0)
+
         daemonbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         daemonbox.set_border_width(10)
         daemonbox.set_spacing(10)

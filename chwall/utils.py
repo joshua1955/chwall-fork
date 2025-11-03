@@ -132,6 +132,7 @@ def read_config():
     config["general"].setdefault(
         "favorites_path", f"{BASE_CACHE_PATH}/favorites"
     )
+    config["general"].setdefault("lock_screen_sync", False)
     return migrate_config(config)
 
 
