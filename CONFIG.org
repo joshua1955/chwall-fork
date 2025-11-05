@@ -41,7 +41,7 @@ objects:
 #+begin_src yaml
 ---
 general:
-  desktop: plasma  # For KDE Plasma users
+  desktop: gnome
   shared:
     path: /var/cache/last-wall
   sources:

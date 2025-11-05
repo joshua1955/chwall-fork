@@ -29,7 +29,8 @@ sources:
 - Wallhaven
 
 It currently supports some major desktop environments (Gnome, XFCE,
-Mate, KDE Plasma) and light window managers (Sway and anything accepting feh).
+Mate, KDE Plasma) and light window managers (Sway and anything
+accepting feh).
 
 * Install
 

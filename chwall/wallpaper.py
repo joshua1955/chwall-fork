@@ -6,6 +6,7 @@ import shutil
 import hashlib
 import requests
 import subprocess
+import configparser
 from PIL import Image, ImageFilter
 from importlib import import_module
 
@@ -237,48 +238,32 @@ def set_kde_lock_wallpaper(path):
     """Set lock screen wallpaper for KDE Plasma"""
     if path is None:
         raise ChwallWallpaperSetError(_("No wallpaper path given"))
-    
-    # Path to kscreenlocker configuration file
+
     config_path = os.path.expanduser("~/.config/kscreenlockerrc")
-    
-    # Check if config file exists
+
+    file_uri = f"file://{path}"
+
+    # If config file doesn't exist, create it from scratch
     if not os.path.exists(config_path):
-        # Create minimal config file if it doesn't exist
         with open(config_path, "w") as f:
-            f.write("[Greeter]\n")
+            # Write nested section first
+            f.write("[Greeter][Wallpaper][org.kde.image][General]\n")
+            f.write(f"Image={file_uri}\n")
+            f.write(f"PreviewImage={file_uri}\n")
             f.write("WallpaperPlugin=org.kde.image\n")
-    
+        return
+
     try:
-        # Read current config
-        config_content = []
-        if os.path.exists(config_path):
-            with open(config_path, "r") as f:
-                config_content = f.readlines()
-        
-        # Update or add Image and PreviewImage settings
-        file_uri = f"file://{path}"
-        image_found = False
-        preview_found = False
-        
-        for i, line in enumerate(config_content):
-            if line.startswith("Image="):
-                config_content[i] = f"Image={file_uri}\n"
-                image_found = True
-            elif line.startswith("PreviewImage="):
-                config_content[i] = f"PreviewImage={file_uri}\n"
-                preview_found = True
-        
-        # Add missing settings
-        if not image_found:
-            config_content.insert(-1, f"Image={file_uri}\n")
-        if not preview_found:
-            config_content.insert(-1, f"PreviewImage={file_uri}\n")
-        
-        # Write updated config back
+        # For existing files, completely rewrite with nested section first
         with open(config_path, "w") as f:
-            f.writelines(config_content)
-            
-    except (OSError, IOError) as e:
+            # Write nested section first
+            f.write("[Greeter][Wallpaper][org.kde.image][General]\n")
+            f.write(f"Image={file_uri}\n")
+            f.write(f"PreviewImage={file_uri}\n")
+            f.write("WallpaperPlugin=org.kde.image\n")
+        return
+
+    except (OSError, IOError, configparser.Error) as e:
         logger.error(_(f"Error updating lock screen wallpaper: {e}"))
         raise ChwallWallpaperSetError(
             _("Error updating KDE lock screen wallpaper"))
@@ -312,15 +297,13 @@ def set_wallpaper(path, config):
     screensaver_method = f"set_{desktop}_screensaver"
     if screensaver_method in globals():
         globals()[screensaver_method](shared_path or path)
-    
-    # Set KDE lock screen wallpaper if enabled
-    if (desktop == "plasma" and 
-        config["general"].get("lock_screen_sync", False)):
+
+    if config["general"].get("kde_screen_locker_sync", False):
         try:
             set_kde_lock_wallpaper(path)
         except ChwallWallpaperSetError as e:
             logger.warning(_(f"Could not set lock screen wallpaper: {e}"))
-    
+
     if shared_path is not None and shared_path != "":
         shared_path = os.path.expanduser(shared_path)
         if config["general"]["shared"].get("blur", False):

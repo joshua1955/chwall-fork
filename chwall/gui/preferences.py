@@ -566,9 +566,9 @@ class PrefDialog(Gtk.Dialog):
         genbox.pack_start(prefbox, False, False, 0)
 
         environments = [("gnome", "Gnome, Pantheon, Budgie, …"),
+                        ("plasma", "KDE Plasma"),
                         ("mate", "Mate"),
                         ("xfce", "XFCE"),
-                        ("plasma", "KDE Plasma"),
                         ("sway", "Sway"),
                         ("feh", _("Use Feh application"))]
         prefbox = self.make_select_pref(
@@ -594,7 +594,7 @@ class PrefDialog(Gtk.Dialog):
         genbox.pack_start(prefbox, False, False, 0)
 
         prefbox = self.make_toggle_pref(
-            "general", "lock_screen_sync",
+            "general", "kde_screen_locker_sync",
             _("Sync lock screen wallpaper with desktop wallpaper (KDE Plasma)"),
             default=False)
         genbox.pack_start(prefbox, False, False, 0)
